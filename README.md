@@ -73,7 +73,11 @@ in your controller.ts file added:
 ```
 
 # Prisma 
-For integrating with SQL and NoSQL databases, Nest provides the @nestjs/typeorm package. Nest uses TypeORM because it's the most mature Object Relational Mapper (ORM) available for TypeScript. Since it's written in TypeScript, it integrates well with the Nest framework.
+Prisma is an <a href="https://github.com/prisma/prisma">open source</a> next-generation ORM.
+installation:
+```
+npm install prisma --save-dev
+```
 
 ### Pull Database Schema to Prisma Model
 You can Syncrhonize the database schema to the prisma model
