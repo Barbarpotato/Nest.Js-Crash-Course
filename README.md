@@ -72,12 +72,62 @@ in your controller.ts file added:
     }
 ```
 
-# TypeORM
+# Prisma 
 For integrating with SQL and NoSQL databases, Nest provides the @nestjs/typeorm package. Nest uses TypeORM because it's the most mature Object Relational Mapper (ORM) available for TypeScript. Since it's written in TypeScript, it integrates well with the Nest framework.
 
-### Mongo
-Nest supports two methods for integrating with the MongoDB database. You can either use the built-in TypeORM module described here, which has a connector for MongoDB, or use Mongoose
-Start by installing the required dependencies:
+### Pull Database Schema to Prisma Model
+You can Syncrhonize the database schema to the prisma model
 ```
-npm i @nestjs/mongoose mongoose
+npx prisma db pull
 ```
+
+### Push Prisma new Schema to Database
+You can creating prisma schema and injected it to the database
+```
+npx prisma db push
+```
+
+### Generate code TypeScript to node_modules
+```
+npx prisma generate
+```
+
+### Creating Prisma Module and Assigned it to nest Project 
+```
+nest g service prisma
+```
+in prisma.service.ts file, setup the database connection:
+```
+import { Injectable, INestApplication, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+    async onModuleInit() {
+        await this.$connect();
+    }
+
+    async enableShutdownHooks(app: INestApplication) {
+        this.$on('beforeExit', async () => {
+            await app.close();
+        });
+    }
+}
+```
+then creating the prisma module:
+```
+nest g module prisma
+```
+in prisma module you can setup like this:
+```
+import { Module } from '@nestjs/common';
+import { PrismaService } from './prisma.service';
+
+@Module({
+  providers: [PrismaService],
+  exports: [PrismaService]
+})
+export class PrismaModule { }
+
+```
+
