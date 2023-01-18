@@ -84,6 +84,10 @@ You can Syncrhonize the database schema to the prisma model
 ```
 npx prisma db pull
 ```
+added @prisma/client:
+```
+npm i @prisma/client
+```
 
 ### Push Prisma new Schema to Database
 You can creating prisma schema and injected it to the database
