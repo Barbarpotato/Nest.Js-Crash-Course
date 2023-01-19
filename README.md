@@ -149,30 +149,21 @@ JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and s
 
 ### What is the JSON Web Token structure?
 In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
-* Header
-* Payload
-* Signature
+1. Header
+2. Payload
+3. Signature
+Therefore, a JWT typically looks like the following:
 <br>
-Therefore, a JWT typically looks like the following.
-<br>
-xxxxx.yyyyy.zzzzz
+<strong>xxxxx.yyyyy.zzzzz</strong>
 
-1. Header 
-<br>
-The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.
-for Example: 
+1. Header. The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA. Note: this JSON is Base64Url encoded to form the first part of the JWT. For Example: 
 ```
 {
   "alg": "HS256",
   "typ": "JWT"
 }
 ```
-Then, this JSON is Base64Url encoded to form the first part of the JWT.
-
-2. Payload
-<br>
-The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims. Note that for signed tokens this information, though protected against tampering, is readable by anyone. Do not put secret information in the payload or header elements of a JWT unless it is encrypted.
-for Example:
+2. Payload. The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims. Note that for signed tokens this information, though protected against tampering, is readable by anyone. Do not put secret information in the payload or header elements of a JWT unless it is encrypted. Note: The payload is then Base64Url encoded to form the second part of the JSON Web Token. for Example:
 ```
 {
   "sub": "1234567890",
@@ -180,19 +171,14 @@ for Example:
   "admin": true
 }
 ```
-The payload is then Base64Url encoded to form the second part of the JSON Web Token.
 
-3. Signature
-<br>
-To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that. For example if you want to use the HMAC SHA256 algorithm, the signature will be created in the following way:
+3. Signature. To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that. For example if you want to use the HMAC SHA256 algorithm. Note: The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.. the signature will be created in the following way:
 ```
 HMACSHA256(
   base64UrlEncode(header) + "." +
   base64UrlEncode(payload),
   secret)
 ```
-The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
-
 ### How do JSON Web Tokens work?
 In authentication, when the user successfully logs in using their credentials, a JSON Web Token will be returned. Since tokens are credentials, great care must be taken to prevent security issues. In general, you should not keep tokens longer than required.<br>
 Whenever the user wants to access a protected route or resource, the user agent should send the JWT, typically in the Authorization header using the Bearer schema. The content of the header should look like the following:
