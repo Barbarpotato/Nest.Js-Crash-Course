@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CatModule } from './cats/cat.module'
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [CatModule, PrismaModule]
+  imports: [AuthModule, CatModule, PrismaModule]
 })
 
 export class AppModule { }

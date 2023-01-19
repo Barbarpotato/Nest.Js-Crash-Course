@@ -1,38 +1,57 @@
 import { Injectable } from '@nestjs/common';
-import { addCatDTO, updateCatDTO } from './dto/cat.dto';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+import { CatDTO } from './dto/cat.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
-import { Cat, CatDocument } from 'schemas/cat.schema';
 
 @Injectable()
 export class catService {
     constructor(private readonly prisma: PrismaService) { }
 
-    all() {
+    getCats(): object {
         return this.prisma.cats.findMany();
     }
-    // async getCats(): Promise<Cat[]> {
-    //     return await this.catModel.find()
-    // }
 
-    // async addCat(payload: addCatDTO): Promise<Cat> {
-    //     const createdCat = new this.catModel(payload);
-    //     return createdCat.save();
-    // }
+    getCatbyId(catId: string): object {
+        return this.prisma.cats.findUnique({
+            where: {
+                id: catId
+            }
+        })
+    }
 
-    // async getCatDetail(id: string): Promise<Cat> {
-    //     const cat = await this.catModel.findOne({ _id: id })
-    //     return cat
-    // }
+    addCat(payload: CatDTO): object {
+        const { name, age, skinColor, weight } = payload
+        return this.prisma.cats.create({
+            data: {
+                v: 0,
+                name: name,
+                age: age,
+                skinColor: skinColor,
+                weight: weight
+            }
+        })
+    }
 
-    // async editCat(id: string, payload: updateCatDTO): Promise<Cat> {
-    //     const { name, age, skinColor, weight } = payload
-    //     return await this.catModel.findByIdAndUpdate({ _id: id }, { name, age, skinColor, weight })
-    // }
+    updateCat(payload: CatDTO, catId: string): object {
+        const { name, age, skinColor, weight } = payload
+        return this.prisma.cats.update({
+            where: {
+                id: catId
+            },
+            data: {
+                v: 0,
+                name: name,
+                age: age,
+                skinColor: skinColor,
+                weight: weight
+            }
+        })
+    }
 
-    // async deleteCat(id: string): Promise<Cat> {
-    //     return await this.catModel.findByIdAndDelete({ _id: id })
-    // }
+    deleteCat(catId: string): object {
+        return this.prisma.cats.delete({
+            where: {
+                id: catId
+            }
+        })
+    }
 }
