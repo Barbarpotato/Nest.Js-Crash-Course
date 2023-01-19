@@ -149,13 +149,6 @@ JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and s
 
 ### What is the JSON Web Token structure?
 In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
-1. Header
-2. Payload
-3. Signature
-Therefore, a JWT typically looks like the following:
-<br>
-<strong>xxxxx.yyyyy.zzzzz</strong>
-
 1. Header. The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA. Note: this JSON is Base64Url encoded to form the first part of the JWT. For Example: 
 ```
 {
@@ -217,10 +210,12 @@ import { AuthService } from './auth.service';
 export class AuthModule { }
 ```
 - inject the jwtService in auth.service.ts file:
+```
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
     constructor(private readonly jwtService: JwtService) { }
 }
+```
 
