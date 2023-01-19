@@ -79,6 +79,11 @@ installation:
 npm install prisma --save-dev
 ```
 
+### Generated the prisma schema
+```
+npx prisma init
+```
+
 ### Pull Database Schema to Prisma Model
 You can Syncrhonize the database schema to the prisma model
 ```
