@@ -8,10 +8,12 @@ datasource db {
 }
 
 model cats {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  v         Int    @map("__v")
-  age       Int
-  name      String
-  skinColor String
-  weight    Int
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  v            Int    @map("__v")
+  age          Int
+  name         String
+  password     String
+  refreshToken String
+  skinColor    String
+  weight       Int
 }

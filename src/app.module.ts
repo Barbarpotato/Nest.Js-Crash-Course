@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CatModule } from './cats/cat.module'
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
+import { JwtStrategy } from '../src/cats/jwt.strategy';
 
 @Module({
-  imports: [AuthModule, CatModule, PrismaModule]
+  imports: [CatModule]
 })
 
 export class AppModule { }

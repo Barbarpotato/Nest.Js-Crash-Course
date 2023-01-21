@@ -1,10 +1,18 @@
-import { IsNotEmpty, IsInt, IsString } from 'class-validator'
+import { IsNotEmpty, IsInt, IsString, isString } from 'class-validator'
 import { Type } from 'class-transformer'
 
 export class CatDTO {
     @IsNotEmpty()
     @IsString()
     name: string;
+
+    @IsNotEmpty()
+    @IsString()
+    password: string;
+
+    @IsNotEmpty()
+    @IsString()
+    refreshToken: string;
 
     @IsNotEmpty()
     @IsInt()

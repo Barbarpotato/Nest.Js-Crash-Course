@@ -184,6 +184,9 @@ Whenever the user wants to access a protected route or resource, the user agent 
 Authorization: Bearer <token>
 ```
 
+### Access Token and Refresh Token
+The lifetime of a refresh token is much longer compared to the lifetime of an access token. Refresh tokens can also expire but are quiet long-lived. When current access tokens expire or become invalid, the authorization server provides refresh tokens to the client to obtain new access token. if Refresh token was expired, then it will be automatically redirect user to the login area.
+
 ### JWT Installation
 ```
 npm install @nestjs/passport @nestjs/jwt passport passport-jwt
@@ -224,3 +227,46 @@ export class AuthService {
 }
 ```
 
+### Configure the JWT strategy to protect routes
+1. Create new file for the jwt strategy:
+```
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { PassportStrategy } from '@nestjs/passport';
+import { Injectable } from '@nestjs/common';
+import { jwtConfig } from 'config/jwt.config';
+
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+    constructor() {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: true,
+            secretOrKey: jwtConfig.secret,
+        });
+    }
+
+    async validate(payload: any) {
+        return { userId: payload.sub, username: payload.username };
+    }
+}
+```
+
+2. In module file, added jwtStrategy:
+```
+@Module({
+    providers: [ JwtStrategy],
+})
+
+export class someModule { }
+```
+
+3. Finally, creating Guard in some route endpoint:
+```
+    @Get('/findCat/:catId')
+    @UseGuards(AuthGuard('jwt'))
+    @HttpCode(200)
+    async findCatbyId(@Param('catId') catId: string, @Res() res: Response): Promise<object> {
+        const catById = await this.catService.getCatbyId(catId)
+        return res.json(catById)
+    }
+```
